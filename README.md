@@ -1,7 +1,7 @@
-Identity-Based Encryption over NTRU Lattices
+Public Key Encryption with Conjunctive Keyword Search over NTRU Lattices
 ===========
 
-This software is a proof-of-concept implementation of an identity-based encryption scheme over NTRU lattices, described in the paper "Efficient Identity-Based Encryption over NTRU Lattices", of Léo Ducas, Vadim Lyubashevsky and Thomas Prest, available at http://homepages.cwi.nl/~ducas/ , http://www.di.ens.fr/~lyubash/ and http://www.di.ens.fr/~prest/ .
+This software is a proof-of-concept implementation of a PECKS scheme over NTRU lattices. The paper hasn't been published yet.
 
 Warning
 =======
@@ -15,12 +15,8 @@ To modify the parameters, edit the values N0 and q0 in params.h.
 To run on an Unix machine with g++:
 ```
 $ make
-$ ./IBE
+$ ./PECKS
 ```
 
 If GMP and NTL are not in a standard directory, you have to modify the CCFLAGS and LDFLAGS in the Makefile to indicate where they are.
 
-
-A note on efficiency
-====================
-Since the publication of "Efficient Identity-Based Encryption over NTRU Lattices", this code has been updated several times, so do the timings claimed. Currently, the timings for encryption/decryption are ~10 times faster than what was claimed in the Proceedings version of "Efficient Identity-Based Encryption over NTRU Lattices".
