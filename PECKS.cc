@@ -72,6 +72,7 @@ int main()
     CompletePK(PKD, PK);
 
     t2 = clock();
+
     diff = ((float)t2 - (float)t1)/1000000.0F;
     cout << "It took " << diff << " seconds to generate the  key pair" << endl;
 

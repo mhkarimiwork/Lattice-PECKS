@@ -320,7 +320,7 @@ bool PECKS_Test(const PK_Data * const PKD, long SE[3][N0], ZZX t_w)
         y[i] = ((unsigned long)(SE[1][i] - y[i])) % q0;
         y[i] = (y[i] + (q0>>2)) / (q0>>1);
         y[i] %= 2;
-        if (SE[2][i] == (SE[1][i] + y[i]                + q0/2)%q0 - (q0/2)) {
+        if (SE[2][i] != (SE[1][i] + y[i]                + q0/2)%q0 - (q0/2)) {
             return false;
         }
     }
@@ -460,7 +460,7 @@ void Trapdoor_Test(const unsigned int nb_trap, SK_Data * SKD)
 
 void Peck_Test(const unsigned int nb_peck, PK_Data * PKD, SK_Data * SKD)
 {
-    unsigned int i, j, rep;
+    unsigned int i, rep;
     bool test_result = false;
     vec_ZZ w;
     ZZX TD_w[2];
@@ -476,16 +476,13 @@ void Peck_Test(const unsigned int nb_peck, PK_Data * PKD, SK_Data * SKD)
         PECKS_Trapdoor(TD_w, w, SKD);
         PECKS_Peck(SE, w, PKD);
         test_result = PECKS_Test(PKD, SE, TD_w[1]);
-        
-        for(j=0; j<N0; j++)
+        if(!test_result)
         {
-            if(!test_result)
-            {
-                cout << "ERROR : Test = false " << endl;
-                rep++;
-                break;
-            }
+            cout << "ERROR : Test = false " << endl;
+            rep++;
+            break;
         }
+        
 
         if((i+1)%(nb_peck/10)==0)
         {
