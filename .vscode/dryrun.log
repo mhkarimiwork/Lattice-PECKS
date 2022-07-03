@@ -1,0 +1,5 @@
+make --dry-run --keep-going --print-directory
+make: Entering directory `/Users/behnamkarimi/ducas/Lattice-IBE'
+g++ -Wall -std=gnu++0x -Ofast  -o PECKS Algebra.o FFT.o PECKS.o Random.o Sampling.o Scheme.o io.o -lntl -lgmp 
+make: Leaving directory `/Users/behnamkarimi/ducas/Lattice-IBE'
+ 

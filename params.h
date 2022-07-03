@@ -37,21 +37,21 @@ const ZZ q1 = conv<ZZ>(q0);
 //#endif
 
 typedef struct
-{
+{ 
     ZZX PrK[4];
     CC_t PrK_fft[4][N0];
     RR_t GS_Norms[2*N0];
     RR_t sigma;
     RR_t B[2*N0][2*N0];
     RR_t Bstar[2*N0][2*N0];
-} MSK_Data;
+} SK_Data;
 
 
 typedef struct
 {
     ZZ_pX h;
     CC_t h_FFT[N0];
-} MPK_Data;
+} PK_Data;
 
 
 

@@ -7,18 +7,25 @@
 #include "Random.h"
 #include "Algebra.h"
 
+void GPV(RR_t * v, const RR_t * const c, const RR_t s, const SK_Data * const SKD);
+
 void Keygen(ZZ_pX& PublicKey, ZZX* PrivateKey);
 void CompletePrivateKey(mat_ZZ& B, const ZZX * const PrivateKey);
-void GPV(RR_t * v, const RR_t * const c, const RR_t s, const MSK_Data * const MSKD);
-void CompleteMSK(MSK_Data * MSKD, ZZX * MSK);
-void CompleteMPK(MPK_Data * MPKD, ZZ_pX MPK);
-void IBE_Extract(ZZX SK_id[2], vec_ZZ id, const MSK_Data * const MSKD);
-unsigned long IBE_Verify_Key(const ZZX SK_id[2], const vec_ZZ id, const MSK_Data * const MSKD);
-void IBE_Encrypt(long C[2][N0], const long m[N0], const long id0[N0], const MPK_Data * const MPKD);
-void IBE_Decrypt(long message[N0], const long C[2][N0], const CC_t * const SKid_FFT);
-void Extract_Bench(const unsigned int nb_extr, MSK_Data * MSKD);
-void Encrypt_Bench(const unsigned int nb_cryp, MPK_Data * MPKD, MSK_Data * MSKD);
-void Extract_Test(const unsigned int nb_extr, MSK_Data * MSKD);
-void Encrypt_Test(const unsigned int nb_cryp, MPK_Data * MPKD, MSK_Data * MSKD);
+void CompleteSK(SK_Data * SKD, ZZX * SK);
+void CompletePK(PK_Data * PKD, ZZ_pX PK);
+
+void PECKS_Trapdoor(ZZX TD_w[2], vec_ZZ w, const SK_Data * const SKD);
+unsigned long PECKS_Verify_Trapdoor(const ZZX TD_w[2], const vec_ZZ w, const SK_Data * const SKD);
+void PECKS_Peck(long SE[3][N0], const vec_ZZ w, const PK_Data * const PKD);
+bool PECKS_Test(const PK_Data * const PKD, long SE[3][N0], ZZX t_w);
+
+void Trapdoor_Bench(const unsigned int nb_trap, SK_Data * SKD);
+void Peck_Bench(const unsigned int nb_peck, PK_Data * PKD);
+void Test_Bench(const unsigned int nb_test, PK_Data * PKD, ZZX TD_w, long SE[3][N0]);
+
+
+void Trapdoor_Test(const unsigned int nb_trap, SK_Data * SKD);
+void Peck_Test(const unsigned int nb_peck, PK_Data * PKD, SK_Data * SKD);
+
 
 #endif

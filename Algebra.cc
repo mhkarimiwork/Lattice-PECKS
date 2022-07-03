@@ -319,7 +319,7 @@ void GS_Norm(const ZZX fx, const ZZX gx, int& flag)
 //==============================================================================
 void GenerateBasis(ZZX& f, ZZX& g, ZZX& F, ZZX& G, const ZZ& Norme)
 {
-    int i;
+    int i = 0;
     ZZX rho_f, rho_g, k, aux, fb, gb, num;
     ZZ PGCD, Alpha, Beta;
 

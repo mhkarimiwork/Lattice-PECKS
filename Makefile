@@ -19,10 +19,10 @@ OBJS=$(SRCS:.cc=.o)
 
 .PHONY: all clean mrproper
 
-all: IBE
+all: PECKS
 
-IBE: $(OBJS)
-	$(CC) $(CCFLAGS) -o IBE $(OBJS) $(LDFLAGS)
+PECKS: $(OBJS)
+	$(CC) $(CCFLAGS) -o PECKS $(OBJS) $(LDFLAGS)
 
 %.o: %.cc params.h
 	$(CC) $(CCFLAGS) -c $< 
@@ -31,4 +31,4 @@ clean:
 	rm -f *.o
 
 mrproper:
-	rm -f IBE
+	rm -f PECKS
