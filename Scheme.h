@@ -21,7 +21,7 @@ bool PECKS_Test(const PK_Data * const PKD, long SE[3][N0], ZZX t_w);
 
 void Trapdoor_Bench(const unsigned int nb_trap, SK_Data * SKD);
 void Peck_Bench(const unsigned int nb_peck, PK_Data * PKD);
-void Test_Bench(const unsigned int nb_test, PK_Data * PKD, ZZX TD_w, long SE[3][N0]);
+void Test_Bench(const unsigned int nb_test, PK_Data * PKD, SK_Data * SKD);
 
 
 void Trapdoor_Test(const unsigned int nb_trap, SK_Data * SKD);

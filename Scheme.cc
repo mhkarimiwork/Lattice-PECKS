@@ -345,17 +345,20 @@ void Trapdoor_Bench(const unsigned int nb_trap, SK_Data * SKD)
     clock_t t1, t2;
     float diff;
     unsigned int i;
-    vec_ZZ w;
+    vec_ZZ w[nb_trap];
     ZZX TD_w[2];
+
+    for(i=0; i<nb_trap; i++)
+    {
+        w[i] = RandomVector();
+    }
 
     t1 = clock();
 
     cout << "0%" << flush;
     for(i=0; i<nb_trap; i++)
     {
-        w = RandomVector();
-
-        PECKS_Trapdoor(TD_w, w, SKD);
+        PECKS_Trapdoor(TD_w, w[i], SKD);
         if((i+1)%(nb_trap/10)==0)
         {
             cout << "..." << (i+1)/(nb_trap/10) << "0%" << flush;
@@ -374,9 +377,14 @@ void Peck_Bench(const unsigned int nb_peck, PK_Data * PKD)
     clock_t t1, t2;
     double diff;
     unsigned int i;
-    vec_ZZ w;
-    
+    vec_ZZ w[nb_peck];
     long SE[3][N0];
+
+    for(i=0; i<nb_peck; i++)
+    {
+        w[i] = RandomVector();
+    }
+    
     // ZZX TD_w;
     
     t1 = clock();
@@ -384,8 +392,7 @@ void Peck_Bench(const unsigned int nb_peck, PK_Data * PKD)
     cout << "0%" << flush;
     for(i=0; i<nb_peck; i++)
     {
-        w = RandomVector();
-        PECKS_Peck(SE, w, PKD);
+        PECKS_Peck(SE, w[i], PKD);
 
         if((i+1)%(nb_peck/10)==0)
         {
@@ -400,19 +407,32 @@ void Peck_Bench(const unsigned int nb_peck, PK_Data * PKD)
     cout << "That's " << (diff/nb_peck)*1000*1024/N0 << " milliseconds per Peck per Kilobit." << endl << endl;
 }
 
-void Test_Bench(const unsigned int nb_test, PK_Data * PKD, ZZX TD_w, long SE[3][N0])
+void Test_Bench(const unsigned int nb_test, PK_Data * PKD, SK_Data * SKD)
 {
     clock_t t1, t2;
     double diff;
     unsigned int i;
     
+    // first generate some keywords, trapdoors and Searchable Encryptions
+    vec_ZZ w[nb_test];
+    ZZX TD_w[nb_test][2];
+    long SE[nb_test][3][N0];
     
+    for(i=0; i<nb_test; i++)
+    {
+        w[i] = RandomVector();
+        PECKS_Peck(SE[i], w[i], PKD);
+        PECKS_Trapdoor(TD_w[i], w[i], SKD);
+    }
+    
+    // Now do the Tests:
+
     t1 = clock();
 
     cout << "0%" << flush;
     for(i=0; i<nb_test; i++)
     {
-        PECKS_Test(PKD, SE, TD_w);
+        PECKS_Test(PKD, SE[i], TD_w[i][1]);
         if((i+1)%(nb_test/10)==0)
         {
             cout << "..." << (i+1)/(nb_test/10) << "0%" << flush;

@@ -83,25 +83,28 @@ int main()
     //==============================================================================
     const unsigned int nb_trap = 100;
     const unsigned int nb_peck = 1000;
+    const unsigned int nb_test = 100;
 
-    cout << "\n===================================================================\n RUNNING TRAPDOOR BENCH FOR ";
+    cout << "\n===================================================================\n RUNNING PECKS.Trapdoor BENCH FOR ";
     cout << nb_trap << " DIFFERENT Keywords\n===================================================================\n";
     Trapdoor_Bench(nb_trap, SKD);
 
-    cout << "\n===================================================================\n RUNNING PECK BENCH FOR ";
+    cout << "\n===================================================================\n RUNNING PECKS.PECK BENCH FOR ";
     cout << nb_peck << " DIFFERENT KEYWORDS\n===================================================================\n";
     Peck_Bench(nb_peck, PKD);
 
+    cout << "\n===================================================================\n RUNNING PECKS.Test BENCH FOR ";
+    cout << nb_test << " DIFFERENT KEYWORDS\n===================================================================\n";
+    Test_Bench(nb_test, PKD, SKD);
 
-
-    ///==============================================================================
+    //==============================================================================
     // Trapdoor generation test and PECK/Test test
     //==============================================================================
     cout << "\n===================================================================\n CHECKING TRAPDOOR VALIDITY FOR ";
     cout << nb_trap << " DIFFERENT KEYWORDS\n===================================================================\n";
     Trapdoor_Test(nb_trap, SKD);
 
-    cout << "\n===================================================================\n CHECKING PECK/TEST VALIDITY FOR ";
+    cout << "\n===================================================================\n CHECKING Trapdoor/PECK Validity with Test Algorithm FOR ";
     cout << nb_trap << " DIFFERENT KEYWORDS\n===================================================================\n";
     Peck_Test(nb_peck, PKD, SKD);
 
