@@ -1,5 +1,11 @@
 {
     "files.associations": {
-        "iostream": "cpp"
+        "iostream": "cpp",
+        "__availability": "cpp",
+        "__config": "cpp",
+        "__string": "cpp",
+        "functional": "cpp",
+        "iterator": "cpp",
+        "ostream": "cpp"
     }
 }

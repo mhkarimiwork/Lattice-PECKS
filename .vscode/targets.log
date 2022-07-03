@@ -7,7 +7,7 @@ make all --print-data-base --no-builtin-variables --no-builtin-rules --question
 
 # This program built for i386-apple-darwin11.3.0
 
-# Make data base, printed on Sun Jul  3 18:46:17 2022
+# Make data base, printed on Sun Jul  3 22:57:59 2022
 
 # Variables
 
@@ -40,7 +40,7 @@ VSCODE_VERBOSE_LOGGING = true
 # environment
 __CFBundleIdentifier = com.microsoft.VSCode
 # environment
-VSCODE_IPC_HOOK_EXTHOST = /var/folders/7n/rh9b_hkx75s759kkrrlgy30w0000gn/T/vscode-ipc-360a4b0f-60ca-433f-9701-766711f34be0.sock
+VSCODE_IPC_HOOK_EXTHOST = /var/folders/7n/rh9b_hkx75s759kkrrlgy30w0000gn/T/vscode-ipc-1a81d39d-a021-447c-bd8b-d09b4bce9ba8.sock
 # environment
 VSCODE_CWD = /
 # environment
@@ -86,7 +86,7 @@ VSCODE_HANDLES_UNCAUGHT_ERRORS = true
 # automatic
 ^D = $(patsubst %/,%,$(dir $^))
 # environment
-PLATFORMIO_PATH = /Users/behnamkarimi/.platformio/penv/bin:/Users/behnamkarimi/.platformio/penv:/Users/behnamkarimi/.platformio/python3/bin:/Library/Frameworks/Python.framework/Versions/3.10/bin:/Library/Frameworks/Python.framework/Versions/3.9/bin:/opt/anaconda3/bin:/Library/Frameworks/Python.framework/Versions/3.8/bin:/anaconda3/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Applications/VMware Fusion.app/Contents/Public:/Library/TeX/texbin:/usr/local/go/bin:/Library/Apple/usr/bin:/Library/Frameworks/Mono.framework/Versions/Current/Commands:/usr/local/CrossPack-AVR/bin:/Applications/microchip/xc8/v2.32/bin
+PLATFORMIO_PATH = /Users/behnamkarimi/.platformio/python3/bin:/Library/Frameworks/Python.framework/Versions/3.10/bin:/Library/Frameworks/Python.framework/Versions/3.9/bin:/opt/anaconda3/bin:/Library/Frameworks/Python.framework/Versions/3.8/bin:/anaconda3/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Applications/VMware Fusion.app/Contents/Public:/Library/TeX/texbin:/usr/local/go/bin:/Library/Apple/usr/bin:/Library/Frameworks/Mono.framework/Versions/Current/Commands:/usr/local/CrossPack-AVR/bin:/Applications/microchip/xc8/v2.32/bin
 # default
 MAKE = $(MAKE_COMMAND)
 # default
@@ -158,9 +158,9 @@ PICO_SDK_PATH = /Users/behnamkarimi/git/pico-sdk
 # environment
 LANG = C
 # environment
-VSCODE_PID = 14891
+VSCODE_PID = 33932
 # variable set hash-table stats:
-# Load=74/1024=7%, Rehash=0, Collisions=9/107=8%
+# Load=74/1024=7%, Rehash=0, Collisions=7/100=7%
 
 # Pattern-specific Variable Values
 
@@ -168,9 +168,9 @@ VSCODE_PID = 14891
 
 # Directories
 
-# . (device 16777220, inode 53512992): 31 files, no impossibilities.
+# . (device 16777220, inode 53512992): 32 files, no impossibilities.
 
-# 31 files, no impossibilities in 1 directories.
+# 32 files, no impossibilities in 1 directories.
 
 # Implicit Rules
 
@@ -207,14 +207,14 @@ all: PECKS
 #  Implicit rule search has not been done.
 #  File does not exist.
 #  File has been updated.
-#  Needs to be updated (-q is set).
+#  Successfully updated.
 # variable set hash-table stats:
-# Load=0/32=0%, Rehash=0, Collisions=0/7=0%
+# Load=0/32=0%, Rehash=0, Collisions=0/0=0%
 
 io.o: io.cc params.h
 #  Implicit rule search has been done.
 #  Implicit/static pattern stem: `io'
-#  Last modified 2022-07-03 18:28:37
+#  Last modified 2022-07-03 22:47:48
 #  File has been updated.
 #  Successfully updated.
 # variable set hash-table stats:
@@ -226,7 +226,7 @@ io.o: io.cc params.h
 Sampling.o: Sampling.cc params.h
 #  Implicit rule search has been done.
 #  Implicit/static pattern stem: `Sampling'
-#  Last modified 2022-07-03 18:14:41
+#  Last modified 2022-07-03 22:47:45
 #  File has been updated.
 #  Successfully updated.
 # variable set hash-table stats:
@@ -243,7 +243,7 @@ Sampling.o: Sampling.cc params.h
 Scheme.o: Scheme.cc params.h
 #  Implicit rule search has been done.
 #  Implicit/static pattern stem: `Scheme'
-#  Last modified 2022-07-03 18:28:36
+#  Last modified 2022-07-03 22:47:47
 #  File has been updated.
 #  Successfully updated.
 # variable set hash-table stats:
@@ -279,15 +279,15 @@ Sampling.cc:
 # Not a target:
 params.h:
 #  Implicit rule search has been done.
-#  Last modified 2022-07-03 15:05:09
+#  Last modified 2022-07-03 22:47:38
 #  File has been updated.
 #  Successfully updated.
 # variable set hash-table stats:
- 
 # Load=0/32=0%, Rehash=0, Collisions=0/0=0%
 
 # Not a target:
 Makefile:
+ 
 #  Implicit rule search has been done.
 #  Last modified 2022-07-03 18:35:17
 #  File has been updated.
@@ -298,7 +298,7 @@ Makefile:
 # Not a target:
 Scheme.cc:
 #  Implicit rule search has been done.
-#  Last modified 2022-07-03 18:28:29
+#  Last modified 2022-07-03 22:45:34
 #  File has been updated.
 #  Successfully updated.
 # variable set hash-table stats:
@@ -307,7 +307,7 @@ Scheme.cc:
 FFT.o: FFT.cc params.h
 #  Implicit rule search has been done.
 #  Implicit/static pattern stem: `FFT'
-#  Last modified 2022-07-03 18:13:41
+#  Last modified 2022-07-03 22:47:44
 #  File has been updated.
 #  Successfully updated.
 # variable set hash-table stats:
@@ -340,38 +340,21 @@ FFT.cc:
 # variable set hash-table stats:
 # Load=0/32=0%, Rehash=0, Collisions=0/0=0%
 
-PECKS: Algebra.o FFT.o PECKS.o Random.o Sampling.o Scheme.o io.o
+PECKS: Algebra.o FFT.o Random.o Sampling.o Scheme.o io.o main.o
 #  Implicit rule search has not been done.
-#  Implicit/static pattern stem: `'
-#  File does not exist.
+#  Last modified 2022-07-03 22:47:49
 #  File has been updated.
-#  Needs to be updated (-q is set).
-# automatic
-# @ := PECKS
-# automatic
-# % := 
-# automatic
-# * := 
-# automatic
-# + := Algebra.o FFT.o PECKS.o Random.o Sampling.o Scheme.o io.o
-# automatic
-# | := 
-# automatic
-# < := Algebra.o
-# automatic
-# ^ := Algebra.o FFT.o PECKS.o Random.o Sampling.o Scheme.o io.o
-# automatic
-# ? := Algebra.o FFT.o PECKS.o Random.o Sampling.o Scheme.o io.o
+#  Successfully updated.
 # variable set hash-table stats:
-# Load=8/32=25%, Rehash=0, Collisions=2/15=13%
+# Load=0/32=0%, Rehash=0, Collisions=0/0=0%
 #  commands to execute (from `Makefile', line 25):
 	$(CC) $(CCFLAGS) -o PECKS $(OBJS) $(LDFLAGS)
 	
 
-PECKS.o: PECKS.cc params.h
+main.o: main.cc params.h
 #  Implicit rule search has been done.
-#  Implicit/static pattern stem: `PECKS'
-#  Last modified 2022-07-03 18:14:39
+#  Implicit/static pattern stem: `main'
+#  Last modified 2022-07-03 22:47:49
 #  File has been updated.
 #  Successfully updated.
 # variable set hash-table stats:
@@ -383,7 +366,7 @@ PECKS.o: PECKS.cc params.h
 Algebra.o: Algebra.cc params.h
 #  Implicit rule search has been done.
 #  Implicit/static pattern stem: `Algebra'
-#  Last modified 2022-07-03 18:14:38
+#  Last modified 2022-07-03 22:47:43
 #  File has been updated.
 #  Successfully updated.
 # variable set hash-table stats:
@@ -393,9 +376,9 @@ Algebra.o: Algebra.cc params.h
 	
 
 # Not a target:
-PECKS.cc:
+main.cc:
 #  Implicit rule search has been done.
-#  Last modified 2022-07-03 18:14:31
+#  Last modified 2022-07-03 22:30:14
 #  File has been updated.
 #  Successfully updated.
 # variable set hash-table stats:
@@ -413,7 +396,7 @@ Algebra.cc:
 Random.o: Random.cc params.h
 #  Implicit rule search has been done.
 #  Implicit/static pattern stem: `Random'
-#  Last modified 2022-07-03 18:14:40
+#  Last modified 2022-07-03 22:47:45
 #  File has been updated.
 #  Successfully updated.
 # variable set hash-table stats:
@@ -423,7 +406,7 @@ Random.o: Random.cc params.h
 	
 
 # files hash-table stats:
-# Load=23/1024=2%, Rehash=0, Collisions=10/83=12%
+# Load=23/1024=2%, Rehash=0, Collisions=10/82=12%
 # VPATH Search Paths
 
 # No `vpath' search paths.
@@ -435,6 +418,6 @@ Random.o: Random.cc params.h
 # strcache size: total = 4096 / max = 4096 / min = 4096 / avg = 4096
 # strcache free: total = 4087 / max = 4087 / min = 4087 / avg = 4087
 
-# Finished Make data base on Sun Jul  3 18:46:17 2022
+# Finished Make data base on Sun Jul  3 22:57:59 2022
 
  

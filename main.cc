@@ -81,9 +81,9 @@ int main()
     //==============================================================================
     // Trapdoor Generation bench and PECK/TEST bench
     //==============================================================================
-    const unsigned int nb_trap = 100;
-    const unsigned int nb_peck = 1000;
-    const unsigned int nb_test = 100;
+    const unsigned int nb_trap = 10;
+    const unsigned int nb_peck = 100;
+    const unsigned int nb_test = 10;
 
     cout << "\n===================================================================\n RUNNING PECKS.Trapdoor BENCH FOR ";
     cout << nb_trap << " DIFFERENT Keywords\n===================================================================\n";

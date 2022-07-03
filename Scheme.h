@@ -14,10 +14,10 @@ void CompletePrivateKey(mat_ZZ& B, const ZZX * const PrivateKey);
 void CompleteSK(SK_Data * SKD, ZZX * SK);
 void CompletePK(PK_Data * PKD, ZZ_pX PK);
 
-void PECKS_Trapdoor(ZZX TD_w[2], vec_ZZ w, const SK_Data * const SKD);
-unsigned long PECKS_Verify_Trapdoor(const ZZX TD_w[2], const vec_ZZ w, const SK_Data * const SKD);
-void PECKS_Peck(long SE[3][N0], const vec_ZZ w, const PK_Data * const PKD);
-bool PECKS_Test(const PK_Data * const PKD, long SE[3][N0], ZZX t_w);
+void PECKS_Trapdoor(ZZX TD_w[2], int * I, vec_ZZ * w, size_t m, const SK_Data * const SKD);
+unsigned long PECKS_Verify_Trapdoor(const ZZX TD_w[2], int * I, vec_ZZ * w, size_t m, const SK_Data * const SKD);
+void PECKS_Peck(long SE[1+2*l0][N0], vec_ZZ * w, const PK_Data * const PKD);
+bool PECKS_Test(const PK_Data * const PKD, long SE[1+2*l0][N0], int * I, size_t m, ZZX t_w);
 
 void Trapdoor_Bench(const unsigned int nb_trap, SK_Data * SKD);
 void Peck_Bench(const unsigned int nb_peck, PK_Data * PKD);
