@@ -5,9 +5,12 @@ l = 10
 ===================================================================
 
 
-Key pair generation time: 2.64732 seconds
-
+Key pair generation time:   2.89961 seconds
+Trapdoor(sk, W) avg time:   6.53964 milliseconds
+PECKS(pk, Q) avg time:      14.5125 milliseconds
+Test(pk, SE, T_Q) avg time: 21.1294 milliseconds
 ===================================================================
- RUNNING PECKS.Trapdoor BENCH: 
-Trapdoor(sk, W) avg time:6.16295 seconds
-PECKS(pk, Q) avg time:1.48088 seconds
+
+
+Invalid Trapdoors in 100 tries: 0
+Invalid Trapdoor/PECK in 100 tries: 100

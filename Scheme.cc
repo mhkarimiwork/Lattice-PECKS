@@ -185,7 +185,7 @@ void PECKS_Trapdoor(ZZX TD_w[2], int * I, vec_ZZ * w, size_t m, const SK_Data * 
     TD_w[0].SetLength(N0);
     TD_w[1].SetLength(N0);
 
-    // set the center of Gaussian distribution for GPV sampling: (note that t = H(w) is implemented by (RR_t) conv<double>(w[i])
+    // set the center of Gaussian distribution for GPV sampling: (note that t = H(w) is implemented by w mod q0
     for(i=0;i<N0;i++)
     {
         c[i] = 0;
@@ -257,7 +257,7 @@ void PECKS_Peck(long SE[1+2*l0][N0], vec_ZZ * w, const PK_Data * const PKD)
     long r[N0], e1[N0], e2[l0][N0];
     // keyword enkryption is done via KEM mechanism. key = k:
     // t = Hash of keyword w
-    long k[l0][N0], t[l0][N0];
+    long k[N0], t[l0][N0];
     // variables for fft of r, t, and aux variables
     CC_t r_FFT[N0], t_FFT[l0][N0], aux1_FFT[N0], aux2_FFT[l0][N0];
     for(j=0;j<l0;j++)
@@ -276,8 +276,8 @@ void PECKS_Peck(long SE[1+2*l0][N0], vec_ZZ * w, const PK_Data * const PKD)
         for(j=0;j<l0;j++)
         {
             e2[j][i] = (rand()%3) - 1;
-            k[j][i] = rand()%2;
         }
+        k[i] = rand()%2;
         r[i] = (rand()%3) - 1;
     }
 
@@ -314,8 +314,8 @@ void PECKS_Peck(long SE[1+2*l0][N0], vec_ZZ * w, const PK_Data * const PKD)
         SE[0][i] = (SE[0][i] + e1[i]               + q0/2)%q0 - (q0/2);
         for(j=0;j<l0;j++)
         {
-            SE[1+j][i] = (SE[1+j][i] + e2[j][i] + (q0/2)*k[j][i] + q0/2)%q0 - (q0/2);
-            SE[1+l0+j][i] = (SE[1][i] + k[j][i]                + q0/2)%q0 - (q0/2);// I used a simple mod Hash function
+            SE[1+j][i] = (SE[1+j][i] + e2[j][i] + (q0/2)*k[i] + q0/2)%q0 - (q0/2);
+            SE[1+l0+j][i] = (SE[1+j][i] + k[i]                + q0/2)%q0 - (q0/2);// I used a simple mod Hash function
         }
     } 
 
@@ -344,7 +344,7 @@ bool PECKS_Test(const PK_Data * const PKD, long SE[1+2*l0][N0], int * I, size_t 
     }
 
     MyIntReverseFFT(y, aux_FFT);
-    
+    // now y = b * t_w 
     
 
     for(i=0; i<N0; i++)
@@ -354,8 +354,8 @@ bool PECKS_Test(const PK_Data * const PKD, long SE[1+2*l0][N0], int * I, size_t 
             sum_of_ci[i] += SE[1+I[j]][i];
             sum_of_di[i] += SE[1+l0+I[j]][i];
         }
-        y[i] = ((unsigned long)(sum_of_ci[i] - y[i])) % q0;
-        y[i] = (y[i] + (q0>>2)) / (m*(q0>>1));
+        y[i] = ((unsigned long)(sum_of_ci[i] - y[i])) % q0; // now y = C[I_1] + ... + C[I_m] - b * t_w 
+        y[i] = (y[i] + ((m*q0)/4)) / ((m*q0)/2);
         y[i] %= 2;
 
         for (j = 0; j < m; j++)
@@ -388,7 +388,7 @@ float Trapdoor_Bench(const unsigned int nb_trap, SK_Data * SKD)
     clock_t t1, t2;
     float diff;
     unsigned int i;
-    size_t m = 1 + rand() % l0;
+    unsigned int m = l0;
     int I[m];
     for (size_t j = 0; j < m; j++)
     {
@@ -400,7 +400,6 @@ float Trapdoor_Bench(const unsigned int nb_trap, SK_Data * SKD)
     
     t1 = clock();
 
-    cout << "0%" << flush;
     for(i=0; i<nb_trap; i++)
     {
         for (size_t j = 0; j < m; j++)
@@ -408,10 +407,6 @@ float Trapdoor_Bench(const unsigned int nb_trap, SK_Data * SKD)
             w[j] = RandomVector();
         }    
         PECKS_Trapdoor(TD_w, I, w, m, SKD);
-        // if((i+1)%(nb_trap/10)==0)
-        // {
-        //     cout << "..." << (i+1)/(nb_trap/10) << "0%" << flush;
-        // }
     }
 
     t2 = clock();
@@ -435,7 +430,6 @@ float Peck_Bench(const unsigned int nb_peck, PK_Data * PKD)
     
     t1 = clock();
 
-    cout << "0%" << flush;
     for(i=0; i<nb_peck; i++)
     {
         for(size_t j = 0; j < l0; j++)
@@ -443,10 +437,6 @@ float Peck_Bench(const unsigned int nb_peck, PK_Data * PKD)
             w[j] = RandomVector();
         }
         PECKS_Peck(SE, w, PKD);
-        // if((i+1)%(nb_peck/10)==0)
-        // {
-        //     cout << "..." << (i+1)/(nb_peck/10) << "0%" << flush;
-        // }
     }
 
     t2 = clock();
@@ -454,7 +444,7 @@ float Peck_Bench(const unsigned int nb_peck, PK_Data * PKD)
     cout << "\n\nIt took " << diff << " seconds to do " << nb_peck << " Peck operations." << endl;
     cout << "That's " << (diff/nb_peck)*1000 << " milliseconds per Peck." << endl;
     cout << "That's " << (diff/nb_peck)*1000*1024/N0 << " milliseconds per Peck per Kilobit." << endl << endl;
-    return diff;
+    return (diff/nb_peck)*1000;
 }
 
 float Test_Bench(const unsigned int nb_test, PK_Data * PKD, SK_Data * SKD)
@@ -464,7 +454,7 @@ float Test_Bench(const unsigned int nb_test, PK_Data * PKD, SK_Data * SKD)
     unsigned int i;
     
     // first generate some keywords, trapdoors and Searchable Encryptions
-    size_t m = 1 + rand() % l0;
+    size_t m = l0;
     int I[m];
     for (size_t j = 0; j < m; j++)
     {
@@ -481,7 +471,6 @@ float Test_Bench(const unsigned int nb_test, PK_Data * PKD, SK_Data * SKD)
 
     t1 = clock();
 
-    cout << "0%" << flush;
     for(i=0; i<nb_test; i++)
     {
         for (size_t j = 0; j < m; j++)
@@ -491,10 +480,6 @@ float Test_Bench(const unsigned int nb_test, PK_Data * PKD, SK_Data * SKD)
         PECKS_Peck(SE, w, PKD);
         PECKS_Trapdoor(TD_w, I, w, m, SKD);
         PECKS_Test(PKD, SE, I, m, TD_w[1]);
-        // if((i+1)%(nb_test/10)==0)
-        // {
-        //     cout << "..." << (i+1)/(nb_test/10) << "0%" << flush;
-        // }
     }
 
     t2 = clock();
@@ -502,7 +487,7 @@ float Test_Bench(const unsigned int nb_test, PK_Data * PKD, SK_Data * SKD)
     cout << "\n\nIt took " << diff << " seconds to do " << nb_test << " Test operations." << endl;
     cout << "That's " << (diff/nb_test)*1000 << " milliseconds per Test." << endl;
     cout << "That's " << (diff/nb_test)*1000*1024/N0 << " milliseconds per Test per Kilobit." << endl << endl;
-    return diff;
+    return (diff/nb_test)*1000;
 }
 
 
@@ -510,7 +495,7 @@ unsigned int Trapdoor_Test(const unsigned int nb_trap, SK_Data * SKD)
 {
     unsigned int i, rep;
     
-    size_t m = 1 + rand() % l0;
+    size_t m = l0;
     int I[m];
     for (size_t j = 0; j < m; j++)
     {
@@ -522,7 +507,6 @@ unsigned int Trapdoor_Test(const unsigned int nb_trap, SK_Data * SKD)
 
     rep = 0;
 
-    cout << "0%" << flush;
     for(i=0; i<nb_trap; i++)
     {
         for (size_t j = 0; j < m; j++)
@@ -531,10 +515,6 @@ unsigned int Trapdoor_Test(const unsigned int nb_trap, SK_Data * SKD)
         }    
         PECKS_Trapdoor(TD_w, I, w, m, SKD);
         rep += PECKS_Verify_Trapdoor(TD_w, I, w, m, SKD);
-        // if((i+1)%(nb_trap/10)==0)
-        // {
-        //     cout << "..." << (i+1)/(nb_trap/10) << "0%" << flush;
-        // }
     }
 
     cout << endl;
@@ -552,7 +532,7 @@ unsigned int Peck_Test(const unsigned int nb_peck, PK_Data * PKD, SK_Data * SKD)
 {
     unsigned int i, rep;
     bool test_result = false;
-    size_t m = 1 + rand() % l0;
+    size_t m = l0;
     int I[m];
     for (size_t j = 0; j < m; j++)
     {
@@ -566,7 +546,6 @@ unsigned int Peck_Test(const unsigned int nb_peck, PK_Data * PKD, SK_Data * SKD)
     
     rep = 0;
 
-    cout << "0%" << flush;
     for(i=0; i<nb_peck; i++)
     {
         for (size_t j = 0; j < m; j++)
@@ -575,19 +554,17 @@ unsigned int Peck_Test(const unsigned int nb_peck, PK_Data * PKD, SK_Data * SKD)
         }    
         PECKS_Trapdoor(TD_w, I, w, m, SKD);
         PECKS_Peck(SE, w, PKD);
+        if (PECKS_Verify_Trapdoor(TD_w, I, w, m, SKD) > 0) {
+            cout << "Bad Trapdoors generated!! \n";
+        }
         test_result = PECKS_Test(PKD, SE, I, m, TD_w[1]);
         if(!test_result)
         {
-            cout << "ERROR : Test = false " << endl;
+            // cout << "ERROR : Test = false " << endl;
             rep++;
-            break;
         }
         
 
-        // if((i+1)%(nb_peck/10)==0)
-        // {
-        //     cout << "..." << (i+1)/(nb_peck/10) << "0%" << flush;
-        // }
     }
 
     cout << endl;
