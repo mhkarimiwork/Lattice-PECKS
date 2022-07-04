@@ -89,23 +89,23 @@ int main()
     myfile << "Key pair generation time: " << diff << " seconds" << endl;
 
 
-
+    unsigned int TRIES = 5;
     //==============================================================================
     // Trapdoor Generation bench and PECK/TEST bench
     //==============================================================================
     cout << "\n===================================================================\n RUNNING PECKS.Trapdoor BENCH FOR ";
-    cout << 20 << " DIFFERENT Keywords\n===================================================================\n";
-    myfile << "Trapdoor(sk, W) avg time: " << Trapdoor_Bench(20, SKD) << " seconds" << endl;
+    cout << TRIES << " DIFFERENT Keywords\n===================================================================\n";
+    myfile << "Trapdoor(sk, W) avg time: " << Trapdoor_Bench(TRIES, SKD) << " seconds" << endl;
     
 
     cout << "\n===================================================================\n RUNNING PECKS.PECK BENCH FOR ";
-    cout << 100 << " DIFFERENT KEYWORDS\n===================================================================\n";
-    myfile << "PECKS(pk, Q) avg time: " << Peck_Bench(100, PKD) << " seconds" << endl;
+    cout << TRIES << " DIFFERENT KEYWORDS\n===================================================================\n";
+    myfile << "PECKS(pk, Q) avg time: " << Peck_Bench(TRIES, PKD) << " seconds" << endl;
     
 
     cout << "\n===================================================================\n RUNNING PECKS.Test BENCH FOR ";
-    cout << 20 << " DIFFERENT KEYWORDS\n===================================================================\n";
-    myfile << "Test(pk, SE, T_Q) avg time: " << Test_Bench(20, PKD, SKD) << " seconds" << endl;
+    cout << TRIES << " DIFFERENT KEYWORDS\n===================================================================\n";
+    myfile << "Test(pk, SE, T_Q) avg time: " << Test_Bench(TRIES, PKD, SKD) << " seconds" << endl;
     
     
 
@@ -113,12 +113,12 @@ int main()
     // Trapdoor generation test and PECK/Test test
     //==============================================================================
     cout << "\n===================================================================\n CHECKING TRAPDOOR VALIDITY FOR ";
-    cout << 100 << " DIFFERENT KEYWORDS\n===================================================================\n";
-    myfile << "Invalid Trapdoors in 100 tries: " << Trapdoor_Test(100, SKD) << endl;
+    cout << TRIES << " DIFFERENT KEYWORDS\n===================================================================\n";
+    myfile << "Invalid Trapdoors in 100 tries: " << Trapdoor_Test(TRIES, SKD) << endl;
 
     cout << "\n===================================================================\n CHECKING Trapdoor/PECK Validity with Test Algorithm FOR ";
-    cout << 100 << " DIFFERENT KEYWORDS\n===================================================================\n";
-    myfile << "Invalid Trapdoor/PECK in 100 tries: " << Peck_Test(100, PKD, SKD) << endl;
+    cout << TRIES << " DIFFERENT KEYWORDS\n===================================================================\n";
+    myfile << "Invalid Trapdoor/PECK in 100 tries: " << Peck_Test(TRIES, PKD, SKD) << endl;
     
 
     free(SKD);

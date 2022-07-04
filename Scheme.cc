@@ -408,10 +408,10 @@ float Trapdoor_Bench(const unsigned int nb_trap, SK_Data * SKD)
             w[j] = RandomVector();
         }    
         PECKS_Trapdoor(TD_w, I, w, m, SKD);
-        if((i+1)%(nb_trap/10)==0)
-        {
-            cout << "..." << (i+1)/(nb_trap/10) << "0%" << flush;
-        }
+        // if((i+1)%(nb_trap/10)==0)
+        // {
+        //     cout << "..." << (i+1)/(nb_trap/10) << "0%" << flush;
+        // }
     }
 
     t2 = clock();
@@ -443,10 +443,10 @@ float Peck_Bench(const unsigned int nb_peck, PK_Data * PKD)
             w[j] = RandomVector();
         }
         PECKS_Peck(SE, w, PKD);
-        if((i+1)%(nb_peck/10)==0)
-        {
-            cout << "..." << (i+1)/(nb_peck/10) << "0%" << flush;
-        }
+        // if((i+1)%(nb_peck/10)==0)
+        // {
+        //     cout << "..." << (i+1)/(nb_peck/10) << "0%" << flush;
+        // }
     }
 
     t2 = clock();
@@ -491,10 +491,10 @@ float Test_Bench(const unsigned int nb_test, PK_Data * PKD, SK_Data * SKD)
         PECKS_Peck(SE, w, PKD);
         PECKS_Trapdoor(TD_w, I, w, m, SKD);
         PECKS_Test(PKD, SE, I, m, TD_w[1]);
-        if((i+1)%(nb_test/10)==0)
-        {
-            cout << "..." << (i+1)/(nb_test/10) << "0%" << flush;
-        }
+        // if((i+1)%(nb_test/10)==0)
+        // {
+        //     cout << "..." << (i+1)/(nb_test/10) << "0%" << flush;
+        // }
     }
 
     t2 = clock();
@@ -531,10 +531,10 @@ unsigned int Trapdoor_Test(const unsigned int nb_trap, SK_Data * SKD)
         }    
         PECKS_Trapdoor(TD_w, I, w, m, SKD);
         rep += PECKS_Verify_Trapdoor(TD_w, I, w, m, SKD);
-        if((i+1)%(nb_trap/10)==0)
-        {
-            cout << "..." << (i+1)/(nb_trap/10) << "0%" << flush;
-        }
+        // if((i+1)%(nb_trap/10)==0)
+        // {
+        //     cout << "..." << (i+1)/(nb_trap/10) << "0%" << flush;
+        // }
     }
 
     cout << endl;
@@ -584,10 +584,10 @@ unsigned int Peck_Test(const unsigned int nb_peck, PK_Data * PKD, SK_Data * SKD)
         }
         
 
-        if((i+1)%(nb_peck/10)==0)
-        {
-            cout << "..." << (i+1)/(nb_peck/10) << "0%" << flush;
-        }
+        // if((i+1)%(nb_peck/10)==0)
+        // {
+        //     cout << "..." << (i+1)/(nb_peck/10) << "0%" << flush;
+        // }
     }
 
     cout << endl;
