@@ -21,6 +21,45 @@ using namespace NTL;
 const ZZX phi = Cyclo();
 
 
+
+
+
+//GPV Sampling algorithm. 
+// result is stored in vector v
+// ✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅
+void GPV(RR_t * v, const RR_t * const c, const RR_t s, const SK_Data * const SKD)
+{
+    int i;
+    unsigned j;
+    RR_t ci[2*N0], zi, cip, sip, aux;
+
+    for(j=0; j<2*N0;j++)
+    {
+        ci[j] = c[j];
+    }
+ 
+
+    for(i=2*N0-1; i>=0; i--)
+    {
+        aux = (SKD->GS_Norms)[i];
+        cip = DotProduct(ci, SKD->Bstar[i])/(aux*aux);
+        sip = s/aux;
+        zi = Sample4(cip, sip*PiPrime);
+
+        for(j=0; j<2*N0; j++)
+        {
+            ci[j] -= zi*(SKD->B)[i][j];
+        }
+    }
+
+    for(j=0; j<2*N0; j++)
+    {
+        v[j] = c[j] - ci[j];
+    }
+
+}
+
+
 //==============================================================================
 //Generates from parameters N and q :
 // - a public key : polynomial h
@@ -67,47 +106,6 @@ void CompletePrivateKey(mat_ZZ& B, const ZZX * const PrivateKey)
 }
 
 
-
-
-
-//GPV Sampling algorithm. 
-// result is stored in vector v
-// ✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅
-void GPV(RR_t * v, const RR_t * const c, const RR_t s, const SK_Data * const SKD)
-{
-    int i;
-    unsigned j;
-    RR_t ci[2*N0], zi, cip, sip, aux;
-
-    for(j=0; j<2*N0;j++)
-    {
-        ci[j] = c[j];
-    }
-
-    for(j=0; j<2*N0; j++)
-    {
-
-    }    
-
-    for(i=2*N0-1; i>=0; i--)
-    {
-        aux = (SKD->GS_Norms)[i];
-        cip = DotProduct(ci, SKD->Bstar[i])/(aux*aux);
-        sip = s/aux;
-        zi = Sample4(cip, sip*PiPrime);
-
-        for(j=0; j<2*N0; j++)
-        {
-            ci[j] -= zi*(SKD->B)[i][j];
-        }
-    }
-
-    for(j=0; j<2*N0; j++)
-    {
-        v[j] = c[j] - ci[j];
-    }
-
-}
 
 
 
