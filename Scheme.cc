@@ -383,7 +383,7 @@ bool PECKS_Test(const PK_Data * const PKD, long SE[1+2*l0][N0], int * I, size_t 
 //==============================================================================
 
 
-void Trapdoor_Bench(const unsigned int nb_trap, SK_Data * SKD)
+float Trapdoor_Bench(const unsigned int nb_trap, SK_Data * SKD)
 {
     clock_t t1, t2;
     float diff;
@@ -417,11 +417,13 @@ void Trapdoor_Bench(const unsigned int nb_trap, SK_Data * SKD)
     t2 = clock();
     diff = ((float)t2 - (float)t1)/1000000.0F;
     cout << "\n\nIt took " << diff << " seconds to generate " << nb_trap << " trapdoors." << endl;
-    cout << "That's " << (diff/nb_trap)*1000 << " milliseconds per key." << endl << endl;
+    cout << "That's " << (diff/nb_trap)*1000 << " milliseconds per trapdoor." << endl << endl;
+
+    return (diff/nb_trap)*1000;
 }
 
 
-void Peck_Bench(const unsigned int nb_peck, PK_Data * PKD)
+float Peck_Bench(const unsigned int nb_peck, PK_Data * PKD)
 {
     clock_t t1, t2;
     double diff;
@@ -452,9 +454,10 @@ void Peck_Bench(const unsigned int nb_peck, PK_Data * PKD)
     cout << "\n\nIt took " << diff << " seconds to do " << nb_peck << " Peck operations." << endl;
     cout << "That's " << (diff/nb_peck)*1000 << " milliseconds per Peck." << endl;
     cout << "That's " << (diff/nb_peck)*1000*1024/N0 << " milliseconds per Peck per Kilobit." << endl << endl;
+    return diff;
 }
 
-void Test_Bench(const unsigned int nb_test, PK_Data * PKD, SK_Data * SKD)
+float Test_Bench(const unsigned int nb_test, PK_Data * PKD, SK_Data * SKD)
 {
     clock_t t1, t2;
     double diff;
@@ -499,10 +502,11 @@ void Test_Bench(const unsigned int nb_test, PK_Data * PKD, SK_Data * SKD)
     cout << "\n\nIt took " << diff << " seconds to do " << nb_test << " Test operations." << endl;
     cout << "That's " << (diff/nb_test)*1000 << " milliseconds per Test." << endl;
     cout << "That's " << (diff/nb_test)*1000*1024/N0 << " milliseconds per Test per Kilobit." << endl << endl;
+    return diff;
 }
 
 
-void Trapdoor_Test(const unsigned int nb_trap, SK_Data * SKD)
+unsigned int Trapdoor_Test(const unsigned int nb_trap, SK_Data * SKD)
 {
     unsigned int i, rep;
     
@@ -540,10 +544,11 @@ void Trapdoor_Test(const unsigned int nb_trap, SK_Data * SKD)
     else {
         cout << endl << rep << " out of " << nb_trap << " Trapdoor generations failed miserabily!" << endl << endl;
     }
+    return rep;
 }
 
 
-void Peck_Test(const unsigned int nb_peck, PK_Data * PKD, SK_Data * SKD)
+unsigned int Peck_Test(const unsigned int nb_peck, PK_Data * PKD, SK_Data * SKD)
 {
     unsigned int i, rep;
     bool test_result = false;
@@ -590,4 +595,5 @@ void Peck_Test(const unsigned int nb_peck, PK_Data * PKD, SK_Data * SKD)
     {    cout << endl << nb_peck << " Tests successfully performed!" << endl << endl;    }
     else
     {    cout << endl << rep << " out of " << nb_peck << " Tests failed miserabily!" << endl << endl;    }
+    return rep;
 }

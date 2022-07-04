@@ -7,7 +7,7 @@
 #include <NTL/ZZX.h>
 #include <NTL/mat_ZZ.h>
 #include <gmp.h>
-
+#include <fstream>
 
 #include "params.h"
 #include "io.h"
@@ -38,6 +38,17 @@ int main()
     cout << "It generates a NTRU lattice of dimension 2N and associated modulus q,\n";
     cout << "and perform benches and tests, for trapdoor generation, PECK and Test Operations.";
     cout << "\n=======================================================================\n\n";
+    
+    // open a file for writing the result:
+    ofstream myfile;
+    myfile.open ("results.txt");
+    myfile <<  "===================================================================\n";
+    myfile << "N = " << N0 <<endl;
+    myfile << "q = " << q0 <<endl;
+    myfile << "l = " << l0 <<endl;
+    myfile <<  "===================================================================\n\n\n";
+
+
 
     ZZX SK[4];
     ZZ_pX phiq, PK;
@@ -75,40 +86,43 @@ int main()
 
     diff = ((float)t2 - (float)t1)/1000000.0F;
     cout << "It took " << diff << " seconds to generate the  key pair" << endl;
+    myfile << "Key pair generation time: " << diff << " seconds" << endl;
 
 
 
     //==============================================================================
     // Trapdoor Generation bench and PECK/TEST bench
     //==============================================================================
-    const unsigned int nb_trap = 10;
-    const unsigned int nb_peck = 100;
-    const unsigned int nb_test = 10;
-
     cout << "\n===================================================================\n RUNNING PECKS.Trapdoor BENCH FOR ";
-    cout << nb_trap << " DIFFERENT Keywords\n===================================================================\n";
-    Trapdoor_Bench(nb_trap, SKD);
+    cout << 20 << " DIFFERENT Keywords\n===================================================================\n";
+    myfile << "Trapdoor(sk, W) avg time: " << Trapdoor_Bench(20, SKD) << " seconds" << endl;
+    
 
     cout << "\n===================================================================\n RUNNING PECKS.PECK BENCH FOR ";
-    cout << nb_peck << " DIFFERENT KEYWORDS\n===================================================================\n";
-    Peck_Bench(nb_peck, PKD);
+    cout << 100 << " DIFFERENT KEYWORDS\n===================================================================\n";
+    myfile << "PECKS(pk, Q) avg time: " << Peck_Bench(100, PKD) << " seconds" << endl;
+    
 
     cout << "\n===================================================================\n RUNNING PECKS.Test BENCH FOR ";
-    cout << nb_test << " DIFFERENT KEYWORDS\n===================================================================\n";
-    Test_Bench(nb_test, PKD, SKD);
+    cout << 20 << " DIFFERENT KEYWORDS\n===================================================================\n";
+    myfile << "Test(pk, SE, T_Q) avg time: " << Test_Bench(20, PKD, SKD) << " seconds" << endl;
+    
+    
 
     //==============================================================================
     // Trapdoor generation test and PECK/Test test
     //==============================================================================
     cout << "\n===================================================================\n CHECKING TRAPDOOR VALIDITY FOR ";
-    cout << nb_trap << " DIFFERENT KEYWORDS\n===================================================================\n";
-    Trapdoor_Test(nb_trap, SKD);
+    cout << 100 << " DIFFERENT KEYWORDS\n===================================================================\n";
+    myfile << "Invalid Trapdoors in 100 tries: " << Trapdoor_Test(100, SKD) << endl;
 
     cout << "\n===================================================================\n CHECKING Trapdoor/PECK Validity with Test Algorithm FOR ";
-    cout << nb_trap << " DIFFERENT KEYWORDS\n===================================================================\n";
-    Peck_Test(nb_peck, PKD, SKD);
+    cout << 100 << " DIFFERENT KEYWORDS\n===================================================================\n";
+    myfile << "Invalid Trapdoor/PECK in 100 tries: " << Peck_Test(100, PKD, SKD) << endl;
+    
 
     free(SKD);
     free(PKD);
+    myfile.close();
     return 0;
 }

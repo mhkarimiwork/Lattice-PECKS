@@ -19,13 +19,13 @@ unsigned long PECKS_Verify_Trapdoor(const ZZX TD_w[2], int * I, vec_ZZ * w, size
 void PECKS_Peck(long SE[1+2*l0][N0], vec_ZZ * w, const PK_Data * const PKD);
 bool PECKS_Test(const PK_Data * const PKD, long SE[1+2*l0][N0], int * I, size_t m, ZZX t_w);
 
-void Trapdoor_Bench(const unsigned int nb_trap, SK_Data * SKD);
-void Peck_Bench(const unsigned int nb_peck, PK_Data * PKD);
-void Test_Bench(const unsigned int nb_test, PK_Data * PKD, SK_Data * SKD);
+float Trapdoor_Bench(const unsigned int nb_trap, SK_Data * SKD);
+float Peck_Bench(const unsigned int nb_peck, PK_Data * PKD);
+float Test_Bench(const unsigned int nb_test, PK_Data * PKD, SK_Data * SKD);
 
 
-void Trapdoor_Test(const unsigned int nb_trap, SK_Data * SKD);
-void Peck_Test(const unsigned int nb_peck, PK_Data * PKD, SK_Data * SKD);
+unsigned int Trapdoor_Test(const unsigned int nb_trap, SK_Data * SKD);
+unsigned int Peck_Test(const unsigned int nb_peck, PK_Data * PKD, SK_Data * SKD);
 
 
 #endif
