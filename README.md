@@ -10,7 +10,7 @@ This code is not to be considered secure, efficient or fully portable. Its purpo
 How to use?
 ===========
 
-To modify the parameters, edit the values N0 and q0 in params.h.
+To modify the parameters, edit the values N0, q0 and l0 in params.h.
 
 To run on an Unix machine with g++:
 ```
