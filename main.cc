@@ -63,6 +63,7 @@ int main()
 
     cout << "N = " << N0 << endl;
     cout << "q = " << q0 << endl;
+    cout << "l = " << l0 << endl;
 
     ZZ_p::init(q1);
     zz_p::init(q0);
@@ -89,7 +90,7 @@ int main()
     myfile << "Key pair generation time:   " << diff << " seconds" << endl;
 
 
-    unsigned int TRIES = 100;
+    unsigned int TRIES = 10;
     //==============================================================================
     // Trapdoor Generation bench and PECK/TEST bench
     //==============================================================================

@@ -23,7 +23,6 @@ const ZZX phi = Cyclo();
 
 
 
-
 //GPV Sampling algorithm. 
 // result is stored in vector v
 // ✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅
@@ -165,84 +164,74 @@ void CompletePK(PK_Data * PKD, ZZ_pX PK)
 
 
 // ✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅
-void PECKS_Trapdoor(ZZX TD_w[2], int * I, vec_ZZ * w, size_t m, const SK_Data * const SKD)
+void PECKS_Trapdoor(ZZX * TD_w, int * I, vec_ZZ * w, size_t m, const SK_Data * const SKD)
 {
     // looping variable: (for)
     unsigned int i, j;
 
     // c: center of Gaussian Distribution, td: trapdoor array, sigma: std deviation of gaussian distribution
     RR_t c[2*N0], td[2*N0], sigma;
-    // f,g are components of private key (i.e., of Basis B)
-    ZZX f,g;
-
-    // load f,g from SKD
-    f = SKD -> PrK[0];
-    g = SKD -> PrK[1];
 
     // load std. deviation of distribution from SKD
     sigma = SKD->sigma;
-    // set the length of Trapdoor vector: TD_w = (s, t_w)
-    TD_w[0].SetLength(N0);
-    TD_w[1].SetLength(N0);
 
     // set the center of Gaussian distribution for GPV sampling: (note that t = H(w) is implemented by w mod q0
-    for(i=0;i<N0;i++)
-    {
-        c[i] = 0;
-        for(j=0; j<m; j++) {
-            
-            c[i] += ((RR_t)conv<double>(w[I[j]][i]));
+    for(j=0; j<m; j++) {
+        // set the length of Trapdoor vector: TD_w = (s, t_w)
+        TD_w[j].SetLength(N0);
+        TD_w[j+m].SetLength(N0);
+        for(i=0;i<N0;i++)
+        {
+            c[i] = ((RR_t)conv<double>(w[I[j]][i]));
+            c[i] = fmodl(c[i], q0);
+            c[i+N0] = 0;
         }
-        c[i] = fmodl(c[i], q0);
-        c[i+N0] = 0;
-    }
-    // sample a gaussian vector (td) from lattice:
-    GPV(td, c, sigma, SKD);
+        // sample a gaussian vector (td) from lattice:
+        GPV(td, c, sigma, SKD);
     
-    // (s, t_w) = (t, 0) - GPV(B, sigma, (t, 0)):
-    for(i=0; i<N0; i++)
-    {
-        td[i] = c[i] - td[i];
-        td[i+N0] = - td[i+N0];
+        // (s, t_w) = (t, 0) - GPV(B, sigma, (t, 0)):
+        for(i=0; i<N0; i++)
+        {
+            td[i] = c[i] - td[i];
+            td[i+N0] = - td[i+N0];
+            // save s, t_w in TD_w vector (the trapdoor is t_w but we save s too for testing)
+            TD_w[j][i] = td[i];
+            TD_w[j+m][i] = td[i+N0];
+        }
     }
     
-    // save s, t_w in TD_w vector (the trapdoor is t_w but we save s too for testing)
-    for(i=0; i<N0; i++)
-    {
-        TD_w[0][i] = td[i];
-        TD_w[1][i] = td[i+N0];
-    }
+    
     
 }
 
 // verify if the GPV-Sampled vector has the property s + t_w*h = t
 // ✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅
-unsigned long PECKS_Verify_Trapdoor(const ZZX TD_w[2], int * I, vec_ZZ * w, size_t m, const SK_Data * const SKD)
+unsigned long PECKS_Verify_Trapdoor(const ZZX * TD_w, int * I, vec_ZZ * w, size_t m, const SK_Data * const SKD)
 {
-    unsigned int i;
+    unsigned int i, j;
     ZZX f,g,t,aux;
 
     f = SKD -> PrK[0];
     g = SKD -> PrK[1];
     
-    t = conv<ZZX>(w[I[0]]);
-    for(i=1; i<m; i++)
-    {
-        t = t + conv<ZZX>(w[I[i]]);
-    }
-    // note that h = g*(f^-1) mod q
-    // aux = ((s-t)*f + g*t_w) mod phi
-    aux = ((TD_w[0] - t)*f + g*TD_w[1])%phi;
+    for (j=0; j<m; j++) {
+        t = conv<ZZX>(w[I[j]]);
+        // note that h = g*(f^-1) mod q
+        // aux = ((s-t)*f + g*t_w) mod phi
+        aux = ((TD_w[j] - t)*f + g*TD_w[j+m])%phi;
 
-    for(i=0; i<N0; i++)
-    {
-        aux[i] %= q1;
-    }
+        for(i=0; i<N0; i++)
+        {
+            aux[i] %= q1;
+        }
 
-    if( IsZero(aux) != 0)
-    {
-        cout << "The signature (s, t_w) doesn't verify the required equality [ (s-t)*f + g*t_w = 0 ] !\nActually, (s-t)*f + g*t_w = " << aux << endl << endl;
+        if( IsZero(aux) != 0)
+        {
+            cout << "The signature (s, t_w) doesn't verify the required equality [ (s-t)*f + g*t_w = 0 ] !\nActually, (s-t)*f + g*t_w = " << aux << endl << endl;
+            return IsZero(aux);
+        }
     }
+    
     return IsZero(aux);
 }
 
@@ -257,7 +246,7 @@ void PECKS_Peck(long SE[1+2*l0][N0], vec_ZZ * w, const PK_Data * const PKD)
     long r[N0], e1[N0], e2[l0][N0];
     // keyword enkryption is done via KEM mechanism. key = k:
     // t = Hash of keyword w
-    long k[N0], t[l0][N0];
+    long k[l0][N0], t[l0][N0];
     // variables for fft of r, t, and aux variables
     CC_t r_FFT[N0], t_FFT[l0][N0], aux1_FFT[N0], aux2_FFT[l0][N0];
     for(j=0;j<l0;j++)
@@ -276,8 +265,8 @@ void PECKS_Peck(long SE[1+2*l0][N0], vec_ZZ * w, const PK_Data * const PKD)
         for(j=0;j<l0;j++)
         {
             e2[j][i] = (rand()%3) - 1;
+            k[j][i] = rand()%2;
         }
-        k[i] = rand()%2;
         r[i] = (rand()%3) - 1;
     }
 
@@ -314,8 +303,8 @@ void PECKS_Peck(long SE[1+2*l0][N0], vec_ZZ * w, const PK_Data * const PKD)
         SE[0][i] = (SE[0][i] + e1[i]               + q0/2)%q0 - (q0/2);
         for(j=0;j<l0;j++)
         {
-            SE[1+j][i] = (SE[1+j][i] + e2[j][i] + (q0/2)*k[i] + q0/2)%q0 - (q0/2);
-            SE[1+l0+j][i] = (SE[1+j][i] + k[i]                + q0/2)%q0 - (q0/2);// I used a simple mod Hash function
+            SE[1+j][i] = (SE[1+j][i] + e2[j][i] + (q0/2)*k[j][i] + q0/2)%q0 - (q0/2);
+            SE[1+l0+j][i] = (SE[1+j][i] + k[j][i]                + q0/2)%q0 - (q0/2);// I used a simple mod Hash function
         }
     } 
 
@@ -324,50 +313,41 @@ void PECKS_Peck(long SE[1+2*l0][N0], vec_ZZ * w, const PK_Data * const PKD)
 
 
 // ✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅
-bool PECKS_Test(const PK_Data * const PKD, long SE[1+2*l0][N0], int * I, size_t m, ZZX t_w)
+bool PECKS_Test(const PK_Data * const PKD, long SE[1+2*l0][N0], int * I, size_t m, ZZX * t_w)
 {
     unsigned int i, j;
     CC_t b_FFT[N0], tw_FFT[N0], aux_FFT[N0];
     long y[N0];
-    long sum_of_ci[N0];
-    long sum_of_di[N0];
-    long sum_of_hashes[N0];
+    long ci[N0];
+    long di[N0];
+    long H2[N0];
 
     MyIntFFT(b_FFT, SE[0]);
-    ZZXToFFT(tw_FFT, t_w);
-    for(i=0; i<N0; i++)
-    {
-        aux_FFT[i] = b_FFT[i]*tw_FFT[i];
-        sum_of_ci[i] = 0;
-        sum_of_di[i] = 0;
-        sum_of_hashes[i] = 0;
-    }
-
-    MyIntReverseFFT(y, aux_FFT);
-    // now y = b * t_w 
-    
-
-    for(i=0; i<N0; i++)
-    {
-        for (j = 0; j < m; j++)
+    for (j=0;j<m;j++) {
+        ZZXToFFT(tw_FFT, t_w[j]);
+        for(i=0; i<N0; i++)
         {
-            sum_of_ci[i] += SE[1+I[j]][i];
-            sum_of_di[i] += SE[1+l0+I[j]][i];
+            aux_FFT[i] = b_FFT[i]*tw_FFT[i];
         }
-        y[i] = ((unsigned long)(sum_of_ci[i] - y[i])) % q0; // now y = C[I_1] + ... + C[I_m] - b * t_w 
-        y[i] = (y[i] + ((m*q0)/4)) / ((m*q0)/2);
-        y[i] %= 2;
+        MyIntReverseFFT(y, aux_FFT);
+        // now y = b * t_w 
+        
 
-        for (j = 0; j < m; j++)
+        for(i=0; i<N0; i++)
         {
-            sum_of_hashes[i] = (sum_of_hashes[i]+ SE[1+I[j]][i] + y[i]                + q0/2)%q0 - (q0/2);
-        }
-        if (sum_of_di[i] != sum_of_hashes[i])
-        {
-            return false;
+            ci[i] = SE[1+I[j]][i];
+            di[i] = SE[1+l0+I[j]][i];
+            y[i] = ((unsigned long)(ci[i] - y[i])) % q0; // now y = C[I_i] - b * t_w 
+            y[i] = (y[i] + (q0/4)) / (q0/2);
+            y[i] %= 2;
+
+            H2[i] = (SE[1+I[j]][i] + y[i]                + q0/2)%q0 - (q0/2);
+            if (di[i] != H2[i])
+            {
+                return false;
+            }
         }
     }
-    
     return true;
 }
 
@@ -395,7 +375,7 @@ float Trapdoor_Bench(const unsigned int nb_trap, SK_Data * SKD)
         I[j] = rand() % l0;
     }
     vec_ZZ w[m];
-    ZZX TD_w[2];
+    ZZX TD_w[2*m];
 
     
     t1 = clock();
@@ -461,7 +441,7 @@ float Test_Bench(const unsigned int nb_test, PK_Data * PKD, SK_Data * SKD)
         I[j] = rand() % l0;
     }
     vec_ZZ w[m];
-    ZZX TD_w[2];
+    ZZX TD_w[2*m];
 
         
     long SE[1+2*l0][N0];
@@ -479,7 +459,7 @@ float Test_Bench(const unsigned int nb_test, PK_Data * PKD, SK_Data * SKD)
         }    
         PECKS_Peck(SE, w, PKD);
         PECKS_Trapdoor(TD_w, I, w, m, SKD);
-        PECKS_Test(PKD, SE, I, m, TD_w[1]);
+        PECKS_Test(PKD, SE, I, m, TD_w);
     }
 
     t2 = clock();
@@ -502,7 +482,7 @@ unsigned int Trapdoor_Test(const unsigned int nb_trap, SK_Data * SKD)
         I[j] = rand() % l0;
     }
     vec_ZZ w[m];
-    ZZX TD_w[2];
+    ZZX TD_w[2*m];
 
 
     rep = 0;
@@ -539,7 +519,7 @@ unsigned int Peck_Test(const unsigned int nb_peck, PK_Data * PKD, SK_Data * SKD)
         I[j] = rand() % l0;
     }
     vec_ZZ w[m];
-    ZZX TD_w[2];
+    ZZX TD_w[2*m];
 
     long SE[1+2*l0][N0];
 
@@ -557,7 +537,7 @@ unsigned int Peck_Test(const unsigned int nb_peck, PK_Data * PKD, SK_Data * SKD)
         if (PECKS_Verify_Trapdoor(TD_w, I, w, m, SKD) > 0) {
             cout << "Bad Trapdoors generated!! \n";
         }
-        test_result = PECKS_Test(PKD, SE, I, m, TD_w[1]);
+        test_result = PECKS_Test(PKD, SE, I, m, &TD_w[m]);
         if(!test_result)
         {
             // cout << "ERROR : Test = false " << endl;

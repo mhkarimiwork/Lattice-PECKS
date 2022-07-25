@@ -19,9 +19,9 @@ using std::complex;
 // q0 is the modulus w.r.t. whom the integers are reduced. We suggest to take q0 prime
 // l0 is the number of keywords for PECKS generation
 //=====================================================================================
-#define N0 512
-#define q0 (1<<30)
-#define l0 10
+#define N0 1024
+#define q0 (1<<27)
+#define l0 1
 //======================================================================================
 
 
