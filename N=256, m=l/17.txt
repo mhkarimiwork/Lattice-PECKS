@@ -1,14 +1,15 @@
 ===================================================================
-N = 512
-q = 1073741824
-l = 20
+N = 256
+q = 2097152
+l = 17
+m = 17
 ===================================================================
 
 
-Key pair generation time:   3.79055 seconds
-Trapdoor(sk, W) avg time:   123.988 milliseconds
-PECKS(pk, Q) avg time:      38.9474 milliseconds
-Test(pk, SE, T_Q) avg time: 172.481 milliseconds
+Key pair generation time:   0.318816 seconds
+Trapdoor(sk, W) avg time:   30.6998 milliseconds
+PECKS(pk, Q) avg time:      12.3627 milliseconds
+Test(pk, SE, T_Q) avg time: 10.2049 milliseconds
 ===================================================================
 
 

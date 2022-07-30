@@ -1,5 +1,5 @@
 make --dry-run --always-make --keep-going --print-directory
-make: Entering directory `/Users/behnamkarimi/ducas/Lattice-IBE'
+make: Entering directory `/Users/behnamkarimi/Downloads/NTRU-PECK'
 g++ -Wall -std=gnu++0x -Ofast  -c Algebra.cc 
 g++ -Wall -std=gnu++0x -Ofast  -c FFT.cc 
 g++ -Wall -std=gnu++0x -Ofast  -c Random.cc 
@@ -8,5 +8,5 @@ g++ -Wall -std=gnu++0x -Ofast  -c Scheme.cc
 g++ -Wall -std=gnu++0x -Ofast  -c io.cc 
 g++ -Wall -std=gnu++0x -Ofast  -c main.cc 
 g++ -Wall -std=gnu++0x -Ofast  -o PECKS Algebra.o FFT.o Random.o Sampling.o Scheme.o io.o main.o -lntl -lgmp 
-make: Leaving directory `/Users/behnamkarimi/ducas/Lattice-IBE'
+make: Leaving directory `/Users/behnamkarimi/Downloads/NTRU-PECK'
  

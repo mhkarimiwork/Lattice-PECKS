@@ -1,0 +1,17 @@
+===================================================================
+N = 256
+q = 2097152
+l = 29
+m = 29
+===================================================================
+
+
+Key pair generation time:   0.548168 seconds
+Trapdoor(sk, W) avg time:   52.0736 milliseconds
+PECKS(pk, Q) avg time:      25.9669 milliseconds
+Test(pk, SE, T_Q) avg time: 18.8345 milliseconds
+===================================================================
+
+
+Invalid Trapdoors in 10 tries: 0
+Invalid Trapdoor/PECK in 10 tries: 0
