@@ -1,7 +1,7 @@
 Public Key Encryption with Conjunctive Keyword Search over NTRU Lattices
 ===========
 
-This software is a proof-of-concept implementation of a PECK scheme over NTRU lattices. It's a part of Master's Thesis. 
+This software is a proof-of-concept implementation of a PECK scheme over NTRU lattices. It's a part of my Master's Thesis. 
 
 Warning
 =======
